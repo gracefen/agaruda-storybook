@@ -7,6 +7,7 @@ const preview: Preview = {
       default: "agaruda-purple",
       values: [
         { name: "agaruda-purple", value: "#e6e4ed" },
+        { name: "agaruda-dark", value: "#0d052c" },
         { name: "white", value: "#ffffff" },
         { name: "dark", value: "#171d1f" },
       ],
