@@ -35,39 +35,41 @@ export interface CardProps {
 
 // ─── Glass Panel（cinta-glass.md + Figma 40001826:1674 實測） ─────────────────
 // 外層：backdrop-blur(20px) + 漸層背景 + 三層 shadow + border
-// 內層：absolute inset-0，rgba(0,0,0,0)，模擬 Figma GLASS 折射質感
+// 內層：absolute inset-0，rgba(0,0,0,0.004)，模擬 Figma GLASS 折射質感
 //
 // 注意：Left Info. Right IMG 漸層停止點略不同（9% / 90%），其餘為 9.135% / 89.904%
 
 const glassBase: React.CSSProperties = {
-  backdropFilter: "blur(20px)",
-  WebkitBackdropFilter: "blur(20px)",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
   border: "1px solid rgba(13,5,44,0.1)",
+  // cinta-glass.md 三層 shadow：均使用 rgba(36,18,66) 紫底色，不可替換為黑色
   boxShadow:
-    "0px 1px 0px 0px rgba(36,18,66,0.03), 0px 2px 2px 0px rgba(36,18,66,0.03), 0px 5px 5px 0px rgba(0,0,0,0.05)",
+    "0px 5px 5px rgba(36,18,66,0.05), 0px 2px 2px rgba(36,18,66,0.04), 0px 1px 0px rgba(36,18,66,0.03)",
   borderRadius: 8,
 };
 
 // 標準漸層（Info / Top IMG / Blank）
+// cinta-glass.md：rgba(255,255,255,0.6→0.5)
 const glassPanelStyle: React.CSSProperties = {
   ...glassBase,
   background:
-    "linear-gradient(to bottom, rgba(250,252,252,0.6) 9.135%, rgba(250,252,252,0.5) 89.904%)",
+    "linear-gradient(to bottom, rgba(255,255,255,0.6) 9.135%, rgba(255,255,255,0.5) 89.904%)",
 };
 
 // Left Info. Right IMG 專用漸層（stops 9% / 90%）
 const glassPanelStyleWide: React.CSSProperties = {
   ...glassBase,
   background:
-    "linear-gradient(to bottom, rgba(250,252,252,0.6) 9%, rgba(250,252,252,0.5) 90%)",
+    "linear-gradient(to bottom, rgba(255,255,255,0.6) 9%, rgba(255,255,255,0.5) 90%)",
 };
 
-// Glass 內層（完全透明，模擬 GLASS 折射 effect）
+// Glass 內層（opacity 0.004，模擬 Figma GLASS 折射 effect，見 cinta-glass.md）
 const glassInnerStyle: React.CSSProperties = {
   position: "absolute",
   inset: 0,
   borderRadius: "inherit",
-  background: "rgba(0,0,0,0)",
+  background: "rgba(0,0,0,0.004)",
   pointerEvents: "none",
 };
 
