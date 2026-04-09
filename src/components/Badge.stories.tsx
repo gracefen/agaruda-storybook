@@ -4,7 +4,7 @@ import { Badge } from "./Badge";
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof Badge> = {
-  title: "Agaruda DS/Badge",
+  title: "Components/Badge",
   component: Badge,
   parameters: {
     layout: "centered",

@@ -187,7 +187,7 @@ function ColorsPage() {
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta = {
-  title: "Agaruda DS/Foundation/Colors",
+  title: "Foundation/Color",
   component: ColorsPage,
   parameters: {
     layout: "fullscreen",

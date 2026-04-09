@@ -15,8 +15,8 @@ background: linear-gradient(to bottom,
   rgba(255, 255, 255, 0.6),
   rgba(255, 255, 255, 0.5)
 );
-backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
 ```
 
 ### 邊框

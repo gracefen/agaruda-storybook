@@ -1,0 +1,1 @@
+import './addons/prd-addon'

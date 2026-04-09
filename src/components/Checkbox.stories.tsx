@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Checkbox, CheckboxGroup } from "./Checkbox";
 
 const meta: Meta<typeof Checkbox> = {
-  title: "Agaruda DS/Checkbox",
+  title: "Components/Checkbox",
   component: Checkbox,
   parameters: {
     layout: "centered",

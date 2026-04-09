@@ -4,7 +4,7 @@ import { DataCard } from "./DataCard";
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof DataCard> = {
-  title: "Agaruda DS/Data Card",
+  title: "Components/Card/Data Card",
   component: DataCard,
   parameters: {
     layout: "centered",

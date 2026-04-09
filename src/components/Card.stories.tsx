@@ -4,7 +4,7 @@ import { Card } from "./Card";
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof Card> = {
-  title: "Agaruda DS/Card",
+  title: "Components/Card/Card",
   component: Card,
   parameters: {
     layout: "centered",

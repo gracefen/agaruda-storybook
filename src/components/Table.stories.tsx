@@ -5,7 +5,7 @@ import { Table } from "./Table";
 import type { TableColumn } from "./Table";
 
 const meta: Meta<typeof Table> = {
-  title: "Agaruda DS/Table",
+  title: "Components/Table",
   component: Table,
   parameters: {
     layout: "centered",

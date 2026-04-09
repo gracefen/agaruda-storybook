@@ -4,7 +4,7 @@ import { LibraryAsset } from "./LibraryAsset";
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof LibraryAsset> = {
-  title: "Agaruda DS/Library Asset",
+  title: "Components/Library Asset",
   component: LibraryAsset,
   parameters: {
     layout: "centered",

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { ScrollArea } from "./ScrollArea";
 
 const meta: Meta<typeof ScrollArea> = {
-  title: "Agaruda DS/Scroll Area",
+  title: "Components/Scroll Area",
   component: ScrollArea,
   parameters: {
     layout: "centered",

@@ -193,7 +193,7 @@ function TypographyPage() {
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta = {
-  title: "Agaruda DS/Foundation/Typography",
+  title: "Foundation/Typography",
   component: TypographyPage,
   parameters: {
     layout: "fullscreen",

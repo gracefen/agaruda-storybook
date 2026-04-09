@@ -3,7 +3,7 @@ import { LayoutDashboard, Layers, Settings, FolderOpen, Users, BarChart2 } from 
 import { Sidebar } from "./Sidebar";
 
 const meta: Meta<typeof Sidebar> = {
-  title: "Agaruda DS/Sidebar",
+  title: "Components/Sidebar",
   component: Sidebar,
   parameters: {
     layout: "centered",

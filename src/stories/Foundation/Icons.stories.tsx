@@ -160,7 +160,7 @@ function IconsPage() {
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta = {
-  title: "Agaruda DS/Foundation/Icons",
+  title: "Foundation/Icons",
   component: IconsPage,
   parameters: {
     layout: "fullscreen",

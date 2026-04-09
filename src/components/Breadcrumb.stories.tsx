@@ -4,7 +4,7 @@ import { Breadcrumb } from "./Breadcrumb";
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof Breadcrumb> = {
-  title: "Agaruda DS/Breadcrumb",
+  title: "Components/Breadcrumb",
   component: Breadcrumb,
   parameters: {
     layout: "centered",

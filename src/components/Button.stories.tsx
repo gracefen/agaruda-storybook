@@ -5,7 +5,7 @@ import { Button } from "./Button";
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof Button> = {
-  title: "Agaruda DS/Button",
+  title: "Components/Button",
   component: Button,
   parameters: {
     layout: "centered",
@@ -27,9 +27,9 @@ const meta: Meta<typeof Button> = {
 | Prop | 說明 |
 |---|---|
 | \`type\` | Primary / Secondary / Outline / Ghost / Link / Link Secondary |
-| \`size\` | md（36px）/ sm（30px） |
+| \`size\` | md（36px）/ sm（32px） |
 | \`state\` | Normal / Hover / Disabled / Focused / Loading |
-| \`destructive\` | 危險操作模式（紅色，目前作用於 Primary） |
+| \`destructive\` | 危險操作模式（紅色，套用於所有 type） |
 | \`iconLeading\` | 左側 icon（Lucide ReactNode） |
 | \`iconTrailing\` | 右側 icon（Lucide ReactNode） |
         `,
@@ -145,6 +145,17 @@ export const SizeSm: Story = {
 
 // ─── State Variants ───────────────────────────────────────────────────────────
 
+export const StateHover: Story = {
+  name: "State / Hover",
+  args: {
+    type: "Primary",
+    size: "md",
+    state: "Hover",
+    children: "Hover",
+    iconLeading: <Plus size={16} />,
+  },
+};
+
 export const StateDisabled: Story = {
   name: "State / Disabled",
   args: {
@@ -152,6 +163,17 @@ export const StateDisabled: Story = {
     size: "md",
     state: "Disabled",
     children: "Disabled",
+  },
+};
+
+export const StateFocused: Story = {
+  name: "State / Focused",
+  args: {
+    type: "Primary",
+    size: "md",
+    state: "Focused",
+    children: "Focused",
+    iconLeading: <Plus size={16} />,
   },
 };
 
@@ -167,9 +189,21 @@ export const StateLoading: Story = {
 
 // ─── Destructive ──────────────────────────────────────────────────────────────
 
-export const Destructive: Story = {
+export const DestructivePrimary: Story = {
+  name: "Destructive / Primary",
   args: {
     type: "Primary",
+    size: "md",
+    destructive: true,
+    children: "Delete",
+    iconLeading: <Trash2 size={16} />,
+  },
+};
+
+export const DestructiveSecondary: Story = {
+  name: "Destructive / Secondary",
+  args: {
+    type: "Secondary",
     size: "md",
     destructive: true,
     children: "Delete",
@@ -185,6 +219,37 @@ export const DestructiveOutline: Story = {
     destructive: true,
     children: "Delete",
     iconLeading: <Trash2 size={16} />,
+  },
+};
+
+export const DestructiveGhost: Story = {
+  name: "Destructive / Ghost",
+  args: {
+    type: "Ghost",
+    size: "md",
+    destructive: true,
+    children: "Delete",
+    iconLeading: <Trash2 size={16} />,
+  },
+};
+
+export const DestructiveLink: Story = {
+  name: "Destructive / Link",
+  args: {
+    type: "Link",
+    size: "md",
+    destructive: true,
+    children: "Delete",
+  },
+};
+
+export const DestructiveLinkSecondary: Story = {
+  name: "Destructive / Link Secondary",
+  args: {
+    type: "Link Secondary",
+    size: "md",
+    destructive: true,
+    children: "Delete",
   },
 };
 
@@ -221,7 +286,7 @@ export const IconBoth: Story = {
   },
 };
 
-// ─── All Types Overview ───────────────────────────────────────────────────────
+// ─── Overview Stories ─────────────────────────────────────────────────────────
 
 export const AllTypes: Story = {
   name: "Overview / All Types",
@@ -253,9 +318,26 @@ export const AllStates: Story = {
   name: "Overview / All States",
   render: () => (
     <div className="flex flex-wrap items-center gap-4 p-6">
-      <Button type="Primary" state="Normal">Normal</Button>
+      <Button type="Primary" state="Normal" iconLeading={<Plus size={16} />}>Normal</Button>
+      <Button type="Primary" state="Hover" iconLeading={<Plus size={16} />}>Hover</Button>
+      <Button type="Primary" state="Focused" iconLeading={<Plus size={16} />}>Focused</Button>
       <Button type="Primary" state="Disabled">Disabled</Button>
       <Button type="Primary" state="Loading">Loading</Button>
+    </div>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const AllDestructive: Story = {
+  name: "Overview / All Destructive",
+  render: () => (
+    <div className="flex flex-wrap gap-3 p-6">
+      <Button type="Primary" destructive iconLeading={<Trash2 size={16} />}>Primary</Button>
+      <Button type="Secondary" destructive iconLeading={<Trash2 size={16} />}>Secondary</Button>
+      <Button type="Outline" destructive iconLeading={<Trash2 size={16} />}>Outline</Button>
+      <Button type="Ghost" destructive iconLeading={<Trash2 size={16} />}>Ghost</Button>
+      <Button type="Link" destructive>Link</Button>
+      <Button type="Link Secondary" destructive>Link Secondary</Button>
     </div>
   ),
   parameters: { controls: { disable: true } },

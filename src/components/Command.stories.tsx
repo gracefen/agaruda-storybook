@@ -3,7 +3,7 @@ import { LayoutDashboard, Layers, Settings, Search, FileText, Users } from "luci
 import { Command } from "./Command";
 
 const meta: Meta<typeof Command> = {
-  title: "Agaruda DS/Command",
+  title: "Components/Command",
   component: Command,
   parameters: {
     layout: "centered",

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Alert } from "./Alert";
 
 const meta: Meta<typeof Alert> = {
-  title: "Agaruda DS/Alert",
+  title: "Components/Alert",
   component: Alert,
   parameters: {
     layout: "centered",

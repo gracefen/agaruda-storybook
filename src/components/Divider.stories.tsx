@@ -4,7 +4,7 @@ import { Divider } from "./Divider";
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof Divider> = {
-  title: "Agaruda DS/Divider",
+  title: "Components/Divider",
   component: Divider,
   parameters: {
     layout: "centered",
