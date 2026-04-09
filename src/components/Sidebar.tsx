@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { Plus } from "lucide-react";
+import { Plus, ChevronRight, ChevronDown } from "lucide-react";
+import { useState } from "react";
 import type { ReactNode } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -10,7 +11,11 @@ export interface SidebarItem {
   label: string;
   icon?: ReactNode;
   active?: boolean;
+  /** 預設是否展開（有 subItems 時有效） */
+  expanded?: boolean;
   onClick?: () => void;
+  /** 子分類清單 */
+  subItems?: SidebarItem[];
 }
 
 export interface SidebarSection {
@@ -51,21 +56,58 @@ const glassInnerStyle: React.CSSProperties = {
 
 // ─── Sidebar Item（cinta-interaction.md） ─────────────────────────────────────
 
-function SidebarItemNode({ label, icon, active, onClick }: SidebarItem) {
+function SidebarItemNode({ label, icon, active, expanded: defaultExpanded = false, onClick, subItems }: SidebarItem) {
+  const hasSubItems = !!(subItems && subItems.length > 0);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
+  const handleClick = () => {
+    if (hasSubItems) setIsExpanded((v) => !v);
+    onClick?.();
+  };
+
   return (
-    <button
-      onClick={onClick}
-      className={cn(
-        "w-full flex items-center gap-2 px-3 py-2 rounded-[6px] text-left transition-colors",
-        "font-[Urbanist] text-[14px] font-medium leading-[20px]",
-        active
-          ? "bg-[rgba(13,5,44,0.1)] text-[#171d1f]"  // Active: utility-purple-a10
-          : "text-[#30363a] hover:bg-[rgba(13,5,44,0.04)]"
+    <div>
+      <button
+        onClick={handleClick}
+        className={cn(
+          "w-full flex items-center gap-2 px-3 py-2 rounded-[6px] text-left transition-colors",
+          "font-[Urbanist] text-[14px] font-medium leading-[20px]",
+          active
+            ? "bg-[rgba(13,5,44,0.1)] text-[#171d1f]"
+            : "text-[#30363a] hover:bg-[rgba(13,5,44,0.04)]"
+        )}
+      >
+        {icon && <span className="shrink-0 w-4 h-4 [&>svg]:size-4">{icon}</span>}
+        <span className="flex-1 truncate">{label}</span>
+        {hasSubItems && (
+          isExpanded
+            ? <ChevronDown size={14} className="shrink-0 text-[#91989e]" />
+            : <ChevronRight size={14} className="shrink-0 text-[#91989e]" />
+        )}
+      </button>
+
+      {/* 子分類清單 */}
+      {hasSubItems && isExpanded && (
+        <div className="flex flex-col gap-px pl-2 mt-px">
+          {subItems!.map((sub, i) => (
+            <button
+              key={i}
+              onClick={sub.onClick}
+              className={cn(
+                "w-full flex items-center text-left rounded-[4px] transition-colors",
+                "font-[Urbanist] text-[13px] leading-[20px] px-2 py-1",
+                "border-l-2",
+                sub.active
+                  ? "border-[#7522e0] bg-[rgba(117,34,224,0.06)] font-medium text-[#171d1f]"
+                  : "border-transparent font-normal text-[#30363a] hover:bg-[rgba(13,5,44,0.04)]"
+              )}
+            >
+              <span className="truncate">{sub.label}</span>
+            </button>
+          ))}
+        </div>
       )}
-    >
-      {icon && <span className="shrink-0 w-4 h-4 [&>svg]:size-4">{icon}</span>}
-      <span className="truncate">{label}</span>
-    </button>
+    </div>
   );
 }
 

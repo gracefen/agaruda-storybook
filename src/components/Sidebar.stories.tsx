@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { LayoutDashboard, Layers, Settings, FolderOpen, Users, BarChart2 } from "lucide-react";
+import { LayoutDashboard, Layers, Settings, FolderOpen, Users } from "lucide-react";
 import { Sidebar } from "./Sidebar";
 
 const meta: Meta<typeof Sidebar> = {
@@ -31,55 +31,66 @@ Figma: \`↳ Sidebar\` · 依 \`cinta-layout.md\` 規範實作
 export default meta;
 type Story = StoryObj<typeof Sidebar>;
 
-const defaultSections = [
-  {
-    title: "Main",
-    items: [
-      { label: "Dashboard", icon: <LayoutDashboard size={16} />, active: true },
-      { label: "Workspaces", icon: <Layers size={16} /> },
-      { label: "Analytics", icon: <BarChart2 size={16} /> },
-    ],
-  },
-  {
-    title: "Workspace",
-    action: true,
-    items: [
-      { label: "Agaruda DS", icon: <FolderOpen size={16} /> },
-      { label: "Digital Twins", icon: <FolderOpen size={16} /> },
-      { label: "AI-DCIM", icon: <FolderOpen size={16} /> },
-    ],
-  },
-  {
-    title: "Settings",
-    items: [
-      { label: "Members", icon: <Users size={16} /> },
-      { label: "Settings", icon: <Settings size={16} /> },
-    ],
-  },
-];
+// const defaultSections = [
+//   {
+//     title: "Favorites",
+//     items: [
+//       { label: "AIDC Factory A", icon: <Layers size={16} />, active: true },
+//       { label: "AIDC Factory B", icon: <Layers size={16} /> },
+//     ],
+//   },
+//   {
+//     title: "Features",
+//     // action: true,
+//     items: [
+//       { label: "Sphere", icon: <FolderOpen size={16} /> },
+//       { label: "Viz", icon: <FolderOpen size={16} /> },
+//     ],
+//   },
+//   {
+//     title: "Settings",
+//     items: [
+//       { label: "Members", icon: <Users size={16} /> },
+//       { label: "Settings", icon: <Settings size={16} /> },
+//     ],
+//   },
+// ];
 
-export const Default: Story = {
+export const WithSubItems: Story = {
+  name: "Sidebar with Sub-items",
   render: () => (
-    <div style={{ height: 600 }}>
-      <Sidebar sections={defaultSections} />
-    </div>
-  ),
-  parameters: { controls: { disable: true } },
-};
-
-export const WithAction: Story = {
-  name: "Section with + Action",
-  render: () => (
-    <div style={{ height: 500 }}>
+    <div style={{ height: 520 }}>
       <Sidebar
         sections={[
           {
-            title: "Projects",
-            action: true,
-            onAction: () => alert("Add project"),
+            title: "Favorites",
             items: [
-              { label: "Agaruda DS", icon: <FolderOpen size={16} />, active: true },
-              { label: "Component Library", icon: <FolderOpen size={16} /> },
+              {
+                label: "AIDC Factory A",
+                icon: <Layers size={16} />,
+                active: true,
+                expanded: true,
+                subItems: [
+                  { label: "Demo Data Center A", active: true },
+                  { label: "Demo Data Center B" },
+                ],
+              },
+              { label: "AIDC Factory B", icon: <Layers size={16} /> },
+            ],
+          },
+          {
+            title: "Features",
+            items: [
+              {
+                label: "Sphere",
+                icon: <FolderOpen size={16} />,
+                expanded: false,
+                subItems: [
+                  { label: "Workspaces" },
+                  { label: "Global Library" },
+                ],
+              },
+              { label: "Viz", icon: <FolderOpen size={16} /> },
             ],
           },
         ]}
@@ -89,61 +100,3 @@ export const WithAction: Story = {
   parameters: { controls: { disable: true } },
 };
 
-export const AllVariants: Story = {
-  name: "Overview / All Variants",
-  render: () => (
-    <div className="flex gap-6 items-start">
-      {/* Default */}
-      <div>
-        <p className="font-[Urbanist] text-[12px] text-[#91989e] mb-2">Default</p>
-        <div style={{ height: 480 }}>
-          <Sidebar sections={defaultSections} />
-        </div>
-      </div>
-      {/* Section with action */}
-      <div>
-        <p className="font-[Urbanist] text-[12px] text-[#91989e] mb-2">Section action=true</p>
-        <div style={{ height: 480 }}>
-          <Sidebar
-            sections={[
-              {
-                title: "Projects",
-                action: true,
-                items: [
-                  { label: "Agaruda DS", icon: <LayoutDashboard size={16} />, active: true },
-                  { label: "Digital Twins", icon: <Layers size={16} /> },
-                ],
-              },
-              {
-                title: "Settings",
-                items: [
-                  { label: "Members", icon: <Users size={16} /> },
-                  { label: "Settings", icon: <Settings size={16} /> },
-                ],
-              },
-            ]}
-          />
-        </div>
-      </div>
-    </div>
-  ),
-  parameters: { layout: "centered", controls: { disable: true } },
-};
-
-export const InLayout: Story = {
-  name: "In Layout（Sidebar + Content）",
-  render: () => (
-    <div className="flex gap-0 rounded-[8px] overflow-hidden" style={{ width: 900, height: 600, background: "#e6e4ed" }}>
-      <Sidebar sections={defaultSections} className="rounded-none rounded-l-[8px] shrink-0" />
-      <div className="flex-1 p-8">
-        <h1 className="font-[Urbanist] text-[40px] font-semibold leading-[60px] text-[#171d1f]">
-          Workspaces
-        </h1>
-        <p className="font-[Urbanist] text-[16px] leading-[20px] text-[#30363a] mt-2">
-          Content Area — padding: 32px（space-2xl）
-        </p>
-      </div>
-    </div>
-  ),
-  parameters: { layout: "fullscreen", controls: { disable: true } },
-};

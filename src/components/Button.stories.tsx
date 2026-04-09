@@ -2,6 +2,20 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Plus, ArrowRight, Trash2, Download, ChevronRight } from "lucide-react";
 import { Button } from "./Button";
 
+// ─── Icon Mapping ─────────────────────────────────────────────────────────────
+// Controls 顯示 string key，Storybook 透過 mapping 轉換成實際 ReactNode 傳入 Button
+
+const ICON_MAP = {
+  "(none)":      undefined,
+  "Plus":        <Plus size={16} />,
+  "ArrowRight":  <ArrowRight size={16} />,
+  "Download":    <Download size={16} />,
+  "ChevronRight":<ChevronRight size={16} />,
+  "Trash2":      <Trash2 size={16} />,
+} as const;
+
+type IconKey = keyof typeof ICON_MAP;
+
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof Button> = {
@@ -13,314 +27,123 @@ const meta: Meta<typeof Button> = {
       default: "agaruda-purple",
       values: [
         { name: "agaruda-purple", value: "#e6e4ed" },
-        { name: "white", value: "#ffffff" },
-        { name: "dark", value: "#171d1f" },
+        { name: "white",          value: "#ffffff"  },
+        { name: "dark",           value: "#171d1f"  },
       ],
     },
     docs: {
       description: {
         component: `
-**Button** component — Agaruda Design System
-
-從 Figma node \`40000972:709\` 自動產出。
+**Button** — Agaruda Design System · Figma node \`40000972:709\`
 
 | Prop | 說明 |
 |---|---|
 | \`type\` | Primary / Secondary / Outline / Ghost / Link / Link Secondary |
-| \`size\` | md（36px）/ sm（32px） |
+| \`size\` | \`md\`（36px height） / \`sm\`（32px height） |
 | \`state\` | Normal / Hover / Disabled / Focused / Loading |
-| \`destructive\` | 危險操作模式（紅色，套用於所有 type） |
-| \`iconLeading\` | 左側 icon（Lucide ReactNode） |
-| \`iconTrailing\` | 右側 icon（Lucide ReactNode） |
+| \`destructive\` | 危險操作紅色模式，套用於所有 type |
+| \`iconLeading\` | 左側 Lucide icon |
+| \`iconTrailing\` | 右側 Lucide icon |
         `,
       },
     },
   },
   tags: ["autodocs"],
   argTypes: {
+    // ── Appearance ──────────────────────────────────────────────────────────
     type: {
       control: "select",
       options: ["Primary", "Secondary", "Outline", "Ghost", "Link", "Link Secondary"],
       description: "按鈕視覺類型",
+      table: { category: "Appearance" },
     },
     size: {
-      control: "radio",
+      control: "inline-radio",
       options: ["md", "sm"],
-      description: "尺寸",
+      description: "尺寸　md = 36px　sm = 32px",
+      table: { category: "Appearance" },
     },
     state: {
       control: "select",
       options: ["Normal", "Hover", "Disabled", "Focused", "Loading"],
-      description: "互動狀態",
+      description: "互動狀態（用於 Storybook 靜態展示）",
+      table: { category: "Appearance" },
     },
     destructive: {
       control: "boolean",
-      description: "危險操作（紅色）",
+      description: "危險操作模式（紅色）",
+      table: { category: "Appearance" },
     },
+    // ── Content ─────────────────────────────────────────────────────────────
     children: {
       control: "text",
       description: "按鈕文字",
+      table: { category: "Content" },
     },
+    iconLeading: {
+      control: "select",
+      options: Object.keys(ICON_MAP) as IconKey[],
+      mapping: ICON_MAP,
+      description: "左側 icon（選 (none) 隱藏）",
+      table: { category: "Content" },
+    },
+    iconTrailing: {
+      control: "select",
+      options: Object.keys(ICON_MAP) as IconKey[],
+      mapping: ICON_MAP,
+      description: "右側 icon（選 (none) 隱藏）",
+      table: { category: "Content" },
+    },
+    // ── Hidden ──────────────────────────────────────────────────────────────
+    onClick:    { action: "clicked",   table: { disable: true } },
+    className:  { table: { disable: true } },
+    disabled:   { table: { disable: true } },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-// ─── 基礎 Stories（對應 Figma 主要 variants）────────────────────────────────
+// ─── Playground ───────────────────────────────────────────────────────────────
+// 所有 Controls 開啟，自由調整所有 prop 組合
 
-export const Primary: Story = {
+export const Playground: Story = {
+  name: "Playground",
   args: {
-    type: "Primary",
-    size: "md",
-    children: "Button",
-    iconLeading: <Plus size={16} />,
+    type:        "Primary",
+    size:        "md",
+    state:       "Normal",
+    destructive: false,
+    children:    "Button",
   },
 };
 
-export const Secondary: Story = {
-  args: {
-    type: "Secondary",
-    size: "md",
-    children: "Button",
-  },
-};
+// ─── Styles ───────────────────────────────────────────────────────────────────
 
-export const Outline: Story = {
-  args: {
-    type: "Outline",
-    size: "md",
-    children: "Button",
-    iconLeading: <Download size={16} />,
-  },
-};
-
-export const Ghost: Story = {
-  args: {
-    type: "Ghost",
-    size: "md",
-    children: "Button",
-  },
-};
-
-export const Link: Story = {
-  args: {
-    type: "Link",
-    size: "md",
-    children: "Button",
-    iconTrailing: <ChevronRight size={16} />,
-  },
-};
-
-export const LinkSecondary: Story = {
-  name: "Link Secondary",
-  args: {
-    type: "Link Secondary",
-    size: "md",
-    children: "Button",
-  },
-};
-
-// ─── Size Variants ────────────────────────────────────────────────────────────
-
-export const SizeMd: Story = {
-  name: "Size / md",
-  args: {
-    type: "Primary",
-    size: "md",
-    children: "Medium",
-    iconLeading: <Plus size={16} />,
-  },
-};
-
-export const SizeSm: Story = {
-  name: "Size / sm",
-  args: {
-    type: "Primary",
-    size: "sm",
-    children: "Small",
-    iconLeading: <Plus size={14} />,
-  },
-};
-
-// ─── State Variants ───────────────────────────────────────────────────────────
-
-export const StateHover: Story = {
-  name: "State / Hover",
-  args: {
-    type: "Primary",
-    size: "md",
-    state: "Hover",
-    children: "Hover",
-    iconLeading: <Plus size={16} />,
-  },
-};
-
-export const StateDisabled: Story = {
-  name: "State / Disabled",
-  args: {
-    type: "Primary",
-    size: "md",
-    state: "Disabled",
-    children: "Disabled",
-  },
-};
-
-export const StateFocused: Story = {
-  name: "State / Focused",
-  args: {
-    type: "Primary",
-    size: "md",
-    state: "Focused",
-    children: "Focused",
-    iconLeading: <Plus size={16} />,
-  },
-};
-
-export const StateLoading: Story = {
-  name: "State / Loading",
-  args: {
-    type: "Primary",
-    size: "md",
-    state: "Loading",
-    children: "Loading",
-  },
-};
-
-// ─── Destructive ──────────────────────────────────────────────────────────────
-
-export const DestructivePrimary: Story = {
-  name: "Destructive / Primary",
-  args: {
-    type: "Primary",
-    size: "md",
-    destructive: true,
-    children: "Delete",
-    iconLeading: <Trash2 size={16} />,
-  },
-};
-
-export const DestructiveSecondary: Story = {
-  name: "Destructive / Secondary",
-  args: {
-    type: "Secondary",
-    size: "md",
-    destructive: true,
-    children: "Delete",
-    iconLeading: <Trash2 size={16} />,
-  },
-};
-
-export const DestructiveOutline: Story = {
-  name: "Destructive / Outline",
-  args: {
-    type: "Outline",
-    size: "md",
-    destructive: true,
-    children: "Delete",
-    iconLeading: <Trash2 size={16} />,
-  },
-};
-
-export const DestructiveGhost: Story = {
-  name: "Destructive / Ghost",
-  args: {
-    type: "Ghost",
-    size: "md",
-    destructive: true,
-    children: "Delete",
-    iconLeading: <Trash2 size={16} />,
-  },
-};
-
-export const DestructiveLink: Story = {
-  name: "Destructive / Link",
-  args: {
-    type: "Link",
-    size: "md",
-    destructive: true,
-    children: "Delete",
-  },
-};
-
-export const DestructiveLinkSecondary: Story = {
-  name: "Destructive / Link Secondary",
-  args: {
-    type: "Link Secondary",
-    size: "md",
-    destructive: true,
-    children: "Delete",
-  },
-};
-
-// ─── Icon Variants ────────────────────────────────────────────────────────────
-
-export const IconLeadingOnly: Story = {
-  name: "Icon / Leading only",
-  args: {
-    type: "Primary",
-    size: "md",
-    children: "Create",
-    iconLeading: <Plus size={16} />,
-  },
-};
-
-export const IconTrailingOnly: Story = {
-  name: "Icon / Trailing only",
-  args: {
-    type: "Secondary",
-    size: "md",
-    children: "Next",
-    iconTrailing: <ArrowRight size={16} />,
-  },
-};
-
-export const IconBoth: Story = {
-  name: "Icon / Both sides",
-  args: {
-    type: "Outline",
-    size: "md",
-    children: "Export",
-    iconLeading: <Download size={16} />,
-    iconTrailing: <ChevronRight size={16} />,
-  },
-};
-
-// ─── Overview Stories ─────────────────────────────────────────────────────────
-
-export const AllTypes: Story = {
-  name: "Overview / All Types",
+export const Styles: Story = {
+  name: "Styles",
   render: () => (
-    <div className="flex flex-wrap gap-3 p-6">
-      <Button type="Primary" iconLeading={<Plus size={16} />}>Primary</Button>
+    <div className="flex flex-wrap gap-3 p-4">
+      <Button type="Primary"       iconLeading={<Plus size={16} />}>Primary</Button>
       <Button type="Secondary">Secondary</Button>
-      <Button type="Outline" iconLeading={<Download size={16} />}>Outline</Button>
+      <Button type="Outline"       iconLeading={<Download size={16} />}>Outline</Button>
       <Button type="Ghost">Ghost</Button>
-      <Button type="Link" iconTrailing={<ChevronRight size={16} />}>Link</Button>
-      <Button type="Link Secondary">Link Secondary</Button>
+      <Button type="Link"          iconTrailing={<ChevronRight size={16} />}>Link</Button>
+      <Button type="Link Secondary" iconTrailing={<ArrowRight size={16} />}>Link Secondary</Button>
     </div>
   ),
   parameters: { controls: { disable: true } },
 };
 
-export const AllSizes: Story = {
-  name: "Overview / All Sizes",
-  render: () => (
-    <div className="flex items-center gap-4 p-6">
-      <Button type="Primary" size="md" iconLeading={<Plus size={16} />}>Medium</Button>
-      <Button type="Primary" size="sm" iconLeading={<Plus size={14} />}>Small</Button>
-    </div>
-  ),
-  parameters: { controls: { disable: true } },
-};
+// ─── States ───────────────────────────────────────────────────────────────────
 
-export const AllStates: Story = {
-  name: "Overview / All States",
+export const States: Story = {
+  name: "States",
   render: () => (
-    <div className="flex flex-wrap items-center gap-4 p-6">
-      <Button type="Primary" state="Normal" iconLeading={<Plus size={16} />}>Normal</Button>
-      <Button type="Primary" state="Hover" iconLeading={<Plus size={16} />}>Hover</Button>
-      <Button type="Primary" state="Focused" iconLeading={<Plus size={16} />}>Focused</Button>
+    <div className="flex flex-wrap items-center gap-3 p-4">
+      <Button type="Primary" state="Normal"   iconLeading={<Plus size={16} />}>Normal</Button>
+      <Button type="Primary" state="Hover"    iconLeading={<Plus size={16} />}>Hover</Button>
+      <Button type="Primary" state="Focused"  iconLeading={<Plus size={16} />}>Focused</Button>
       <Button type="Primary" state="Disabled">Disabled</Button>
       <Button type="Primary" state="Loading">Loading</Button>
     </div>
@@ -328,16 +151,19 @@ export const AllStates: Story = {
   parameters: { controls: { disable: true } },
 };
 
-export const AllDestructive: Story = {
-  name: "Overview / All Destructive",
+// ─── Destructive ──────────────────────────────────────────────────────────────
+// 全類型一覽，搭配 Trash2 icon
+
+export const Destructive: Story = {
+  name: "Destructive",
   render: () => (
-    <div className="flex flex-wrap gap-3 p-6">
-      <Button type="Primary" destructive iconLeading={<Trash2 size={16} />}>Primary</Button>
-      <Button type="Secondary" destructive iconLeading={<Trash2 size={16} />}>Secondary</Button>
-      <Button type="Outline" destructive iconLeading={<Trash2 size={16} />}>Outline</Button>
-      <Button type="Ghost" destructive iconLeading={<Trash2 size={16} />}>Ghost</Button>
-      <Button type="Link" destructive>Link</Button>
-      <Button type="Link Secondary" destructive>Link Secondary</Button>
+    <div className="flex flex-wrap gap-3 p-4">
+      <Button type="Primary"       destructive iconLeading={<Trash2 size={16} />}>Delete</Button>
+      <Button type="Secondary"     destructive iconLeading={<Trash2 size={16} />}>Delete</Button>
+      <Button type="Outline"       destructive iconLeading={<Trash2 size={16} />}>Delete</Button>
+      <Button type="Ghost"         destructive iconLeading={<Trash2 size={16} />}>Delete</Button>
+      <Button type="Link"          destructive>Delete</Button>
+      <Button type="Link Secondary" destructive>Delete</Button>
     </div>
   ),
   parameters: { controls: { disable: true } },

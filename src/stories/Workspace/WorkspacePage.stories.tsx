@@ -136,6 +136,11 @@ function SidebarGroupTitle({ label }: { label: string }) {
   );
 }
 
+interface SubItem {
+  label: string;
+  active?: boolean;
+}
+
 interface SidebarItemProps {
   label: string;
   icon?: React.ReactNode;
@@ -143,50 +148,96 @@ interface SidebarItemProps {
   active?: boolean;
   expanded?: boolean;
   isInner?: boolean;
+  subItems?: SubItem[];
 }
 
 // Sidebar Base / Item: w:208, h:32, padding:6 8, gap:8, radius:4
 // Active（InnerItem 01）: fill #0d052c（solid）, text white
-function SidebarItem({ label, icon, shortcut = "⌘P", active, expanded, isInner }: SidebarItemProps) {
+// 有 subItems 時可點擊展開 / 收合子分類清單
+function SidebarItem({ label, icon, shortcut = "⌘P", active, expanded: defaultExpanded = false, isInner, subItems }: SidebarItemProps) {
+  const hasSubItems = !!(subItems && subItems.length > 0);
+  const [isExpanded, setIsExpanded] = React.useState(defaultExpanded);
+
+  // 有 subItems 用 state 控制；無 subItems 用傳入的 expanded prop
+  const showExpanded = hasSubItems ? isExpanded : defaultExpanded;
+
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        padding: "6px 8px",
-        gap: 8,
-        borderRadius: 4,
-        height: 32,
-        cursor: "pointer",
-        background: active ? "#0d052c" : "transparent",
-        minWidth: 0,
-      }}
-    >
-      {/* Icon Leading: 16×16 */}
-      {icon && (
-        <span style={{ flexShrink: 0, width: 16, height: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          {React.isValidElement(icon)
-            ? React.cloneElement(icon as React.ReactElement<{ size?: number; style?: React.CSSProperties }>, {
-                size: 14,
-                style: { color: active ? "rgba(255,255,255,0.7)" : "#91989e" },
-              })
-            : icon}
+    <div>
+      {/* ── Item Row ── */}
+      <div
+        onClick={() => hasSubItems && setIsExpanded((v) => !v)}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          padding: "6px 8px",
+          gap: 8,
+          borderRadius: 4,
+          height: 32,
+          cursor: "pointer",
+          background: active ? "#0d052c" : "transparent",
+          minWidth: 0,
+        }}
+      >
+        {/* Icon Leading: 16×16 */}
+        {icon && (
+          <span style={{ flexShrink: 0, width: 16, height: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {React.isValidElement(icon)
+              ? React.cloneElement(icon as React.ReactElement<{ size?: number; style?: React.CSSProperties }>, {
+                  size: 14,
+                  style: { color: active ? "rgba(255,255,255,0.7)" : "#91989e" },
+                })
+              : icon}
+          </span>
+        )}
+        {/* Label: 14px/400/#171d1f */}
+        <span style={{ flex: 1, fontFamily: "Urbanist,sans-serif", fontSize: 14, fontWeight: 400, lineHeight: "20px", color: active ? "#ffffff" : "#171d1f", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {label}
         </span>
+        {/* Shortcut: 12px/400/#687278 */}
+        <span style={{ fontFamily: "Urbanist,sans-serif", fontSize: 12, fontWeight: 400, color: active ? "rgba(255,255,255,0.5)" : "#687278", flexShrink: 0 }}>
+          {shortcut}
+        </span>
+        {/* Icon Trailing: chevron */}
+        <span style={{ flexShrink: 0, width: 16, height: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {showExpanded
+            ? <ChevronDown size={12} style={{ color: active ? "rgba(255,255,255,0.6)" : "#91989e" }} />
+            : <ChevronRight size={12} style={{ color: active ? "rgba(255,255,255,0.6)" : "#91989e" }} />}
+        </span>
+      </div>
+
+      {/* ── Sub-items List（展開時顯示）── */}
+      {hasSubItems && isExpanded && (
+        <div style={{ paddingLeft: 8, display: "flex", flexDirection: "column", gap: 1 }}>
+          {subItems!.map((item) => (
+            <div
+              key={item.label}
+              style={{
+                height: 28,
+                padding: "4px 8px 4px 10px",
+                borderRadius: 4,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                borderLeft: item.active ? "2px solid #7522e0" : "2px solid transparent",
+                background: item.active ? "rgba(117,34,224,0.06)" : "transparent",
+              }}
+            >
+              <span style={{
+                fontFamily: "Urbanist,sans-serif",
+                fontSize: 13,
+                fontWeight: item.active ? 500 : 400,
+                lineHeight: "20px",
+                color: item.active ? "#171d1f" : "#30363a",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}>
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </div>
       )}
-      {/* Label: 14px/400/#171d1f */}
-      <span style={{ flex: 1, fontFamily: "Urbanist,sans-serif", fontSize: 14, fontWeight: 400, lineHeight: "20px", color: active ? "#ffffff" : "#171d1f", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-        {label}
-      </span>
-      {/* Shortcut: 12px/400/#687278 */}
-      <span style={{ fontFamily: "Urbanist,sans-serif", fontSize: 12, fontWeight: 400, color: active ? "rgba(255,255,255,0.5)" : "#687278", flexShrink: 0 }}>
-        {shortcut}
-      </span>
-      {/* Icon Trailing: chevron */}
-      <span style={{ flexShrink: 0, width: 16, height: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        {expanded
-          ? <ChevronDown size={12} style={{ color: active ? "rgba(255,255,255,0.6)" : "#91989e" }} />
-          : <ChevronRight size={12} style={{ color: active ? "rgba(255,255,255,0.6)" : "#91989e" }} />}
-      </span>
     </div>
   );
 }
@@ -278,7 +329,17 @@ function CintaSidebar() {
             {/* InnerList: pad 0 16 → Container pad 0 8 → total indent 24px */}
             {/* InnerItem 01（active）= Workspaces, 02 = Global Library, 03-05 = Menu Item */}
             <div style={{ paddingLeft: 24, display: "flex", flexDirection: "column" }}>
-              <SidebarItem label="Workspaces" icon={<Layers />} active isInner />
+              <SidebarItem
+                label="Workspaces"
+                icon={<Layers />}
+                active
+                expanded
+                isInner
+                subItems={[
+                  { label: "Demo Data Center A", active: true },
+                  { label: "Demo Data Center B" },
+                ]}
+              />
               <SidebarItem label="Global Library" icon={<BookOpen />} isInner />
               <SidebarItem label="Menu Item" icon={<FolderOpen />} isInner />
               <SidebarItem label="Menu Item" icon={<FolderOpen />} isInner />
